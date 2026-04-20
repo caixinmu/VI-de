@@ -17,7 +17,11 @@ import {
   Zap,
   ArrowRight,
   Download,
-  Loader2
+  Loader2,
+  X,
+  FileText,
+  Plus,
+  MessageSquare
 } from 'lucide-react';
 
 interface VICategory {
@@ -107,6 +111,8 @@ const VI_DATA: VICategory[] = [
 export default function App() {
   const [selections, setSelections] = useState<Record<string, string[]>>({});
   const [submitting, setSubmitting] = useState(false);
+  const [isConfirming, setIsConfirming] = useState(false);
+  const [additionalNotes, setAdditionalNotes] = useState('');
   const [submittedFile, setSubmittedFile] = useState<string | null>(null);
 
   const toggleItem = (categoryTitle: string, item: string) => {
@@ -122,7 +128,7 @@ export default function App() {
     });
   };
 
-  const handleSubmit = async () => {
+  const handleFinalSubmit = async () => {
     if (Object.keys(selections).length === 0) return;
     
     setSubmitting(true);
@@ -132,6 +138,7 @@ export default function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           selections,
+          additionalNotes,
           timestamp: new Date().toLocaleString()
         })
       });
@@ -140,6 +147,8 @@ export default function App() {
       if (data.success) {
         setSubmittedFile(data.fileName);
         setSelections({}); // Clear selections after success
+        setAdditionalNotes('');
+        setIsConfirming(false);
       }
     } catch (error) {
       console.error('Submission failed:', error);
@@ -232,7 +241,7 @@ export default function App() {
 
       {/* Floating Action Button */}
       <AnimatePresence>
-        {totalSelected > 0 && !submittedFile && (
+        {totalSelected > 0 && !submittedFile && !isConfirming && (
           <motion.div 
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -240,17 +249,106 @@ export default function App() {
             className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50"
           >
             <button 
-              onClick={handleSubmit}
-              disabled={submitting}
+              onClick={() => setIsConfirming(true)}
               className="bg-[#000000] text-white px-8 py-4 rounded-full font-semibold shadow-2xl flex items-center space-x-3 hover:scale-105 active:scale-95 transition-all text-sm tracking-tight"
             >
-              {submitting ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <Download className="w-4 h-4" />
-              )}
-              <span>立即提交所选项目 ({totalSelected})</span>
+              <Check className="w-4 h-4" />
+              <span>查看已选项目并提交 ({totalSelected})</span>
             </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Confirmation Modal */}
+      <AnimatePresence>
+        {isConfirming && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-md px-4 py-8 overflow-y-auto"
+          >
+            <motion.div 
+              initial={{ scale: 0.95, y: 20, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              className="bg-white w-full max-w-2xl rounded-[32px] shadow-2xl flex flex-col max-h-[90vh] overflow-hidden"
+            >
+              {/* Header */}
+              <div className="p-6 md:p-8 border-b border-[#e5e5ea] flex justify-between items-center bg-[#fbfbfd]">
+                <div>
+                  <h3 className="text-[24px] font-semibold tracking-tight">确认您的选择</h3>
+                  <p className="text-[14px] text-[#86868b]">请核对清单，并添加任何额外需求。</p>
+                </div>
+                <button 
+                  onClick={() => setIsConfirming(false)}
+                  className="p-2 bg-[#e5e5ea] rounded-full hover:bg-[#d2d2d7] transition-colors"
+                >
+                  <X className="w-5 h-5 text-[#1d1d1f]" />
+                </button>
+              </div>
+
+              {/* Scrollable Summary */}
+              <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-8">
+                <div className="space-y-6">
+                  {(Object.entries(selections) as [string, string[]][]).map(([category, items]) => (
+                    <div key={category} className="space-y-3">
+                      <h4 className="text-[13px] font-bold text-[#0066cc] uppercase tracking-wider">{category}</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        {items.map(item => (
+                          <div key={item} className="flex items-center space-x-2 bg-[#f5f5f7] p-3 rounded-xl border border-[#e5e5ea]">
+                            <Check className="w-4 h-4 text-[#32d74b]" />
+                            <span className="text-[14px] font-medium text-[#1d1d1f] tracking-tight truncate">{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Supplementary Notes Section */}
+                <div className="space-y-4 pt-4">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center text-white">
+                      <Plus className="w-4 h-4" />
+                    </div>
+                    <h4 className="text-[17px] font-semibold tracking-tight">补充其它项目</h4>
+                  </div>
+                  <div className="relative">
+                    <textarea 
+                      value={additionalNotes}
+                      onChange={(e) => setAdditionalNotes(e.target.value)}
+                      placeholder="如果您有其它特殊的 VI 需求或备注，请在此输入..."
+                      className="w-full h-32 p-4 bg-[#f5f5f7] border-2 border-transparent focus:border-[#0066cc] focus:bg-white rounded-[20px] outline-none transition-all text-[15px] resize-none tracking-tight"
+                    />
+                    <div className="absolute right-4 bottom-4 text-[#86868b]">
+                      <MessageSquare className="w-4 h-4" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer Actions */}
+              <div className="p-6 md:p-8 border-t border-[#e5e5ea] bg-[#fbfbfd] flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-4">
+                <button 
+                  onClick={() => setIsConfirming(false)}
+                  className="flex-1 py-4 bg-[#e5e5ea] text-[#1d1d1f] rounded-2xl font-bold text-[15px] tracking-tight hover:bg-[#d2d2d7] transition-all"
+                >
+                  取消
+                </button>
+                <button 
+                  onClick={handleFinalSubmit}
+                  disabled={submitting}
+                  className="flex-[2] py-4 bg-[#000000] text-white rounded-2xl font-bold text-[15px] tracking-tight hover:bg-[#1d1d1f] flex items-center justify-center space-x-2 shadow-lg disabled:opacity-50 transition-all hover:scale-[1.02] active:scale-95"
+                >
+                  {submitting ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <Download className="w-5 h-5" />
+                  )}
+                  <span>完成核对并提交清单</span>
+                </button>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

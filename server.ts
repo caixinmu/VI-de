@@ -16,11 +16,17 @@ async function startServer() {
   // API Route for submitting VI selection
   app.post('/api/submit', async (req, res) => {
     try {
-      const { selections, timestamp } = req.body;
+      const { selections, timestamp, additionalNotes } = req.body;
       
       let content = `LIGHTING VI SYSTEM SELECTION REPORT\n`;
       content += `Generated at: ${timestamp}\n`;
       content += `----------------------------------\n\n`;
+
+      if (additionalNotes) {
+        content += `[SUPPLEMENTARY ITEMS / NOTES]\n`;
+        content += `${additionalNotes}\n\n`;
+        content += `----------------------------------\n\n`;
+      }
 
       for (const category in selections) {
         content += `[${category}]\n`;
