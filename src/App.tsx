@@ -139,6 +139,7 @@ export default function App() {
       const data = await response.json();
       if (data.success) {
         setSubmittedFile(data.fileName);
+        setSelections({}); // Clear selections after success
       }
     } catch (error) {
       console.error('Submission failed:', error);
@@ -151,15 +152,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#f5f5f7] text-[#1d1d1f] font-sans selection:bg-blue-100">
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full h-12 bg-white/70 backdrop-blur-xl border-b border-gray-200/50 z-50 flex items-center justify-center space-x-8 px-4">
-        {['总览', '基础视觉', '产品', '导视', '数字'].map(nav => (
-          <span key={nav} className="text-[12px] font-normal cursor-pointer hover:text-[#0066cc] transition-colors tracking-tight">
-            {nav}
-          </span>
-        ))}
-      </nav>
-
       {/* Hero */}
       <header className="pt-24 pb-20 md:pt-32 md:pb-24 px-6 bg-black text-white text-center">
         <motion.h1 
