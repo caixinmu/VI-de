@@ -35,10 +35,11 @@ const VI_DATA: VICategory[] = [
     title: '基础识别系统',
     desc: '构建品牌的核心基因，注入光与科技的灵魂。',
     items: [
-      '品牌标志 (Logo) 规范与网格制图',
-      '品牌主色与辅助色 (CMYK/RGB/HEX)',
-      '中英文字体库与排版规范',
-      '辅助图形 (光束/电路纹理等延展)'
+      '01 标志规范：企业Logo标准彩色稿、单色稿、反白稿',
+      '02 标准字：公司全称中英文专用字体、印刷字体规范',
+      '03 标准色：主色、辅助色色值 (CMYK/RGB)',
+      '04 辅助图形：灯光射线、光影粒子、光晕波纹的辅助图形提炼',
+      '05 组合规范：标志与“照明/Lighting”字样的标准横竖组合'
     ]
   },
   {
@@ -188,7 +189,7 @@ export default function App() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto py-12 md:py-20 px-4 md:px-6">
-        <h2 className="text-[28px] md:text-[40px] font-semibold text-center mb-10 md:mb-16 tracking-tight px-4">全场景品牌触点，一次掌控。</h2>
+        <h2 className="text-[28px] md:text-[40px] font-semibold text-center mb-10 md:mb-16 tracking-tight px-4">照明品牌VI设计项目</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {VI_DATA.map((cat, idx) => (
