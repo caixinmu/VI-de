@@ -173,10 +173,10 @@ export default function App() {
         </button>
       </nav>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-6 lg:grid-rows-3 gap-4 lg:min-h-[80vh]">
+      <div className="grid grid-cols-2 md:grid-cols-4 md:grid-rows-6 lg:grid-rows-3 gap-3 md:gap-4 lg:min-h-[80vh]">
         
         {/* Main Bento Hero Card */}
-        <div className="md:col-span-4 lg:col-span-2 lg:row-span-2 bg-slate-900 border border-slate-800 rounded-3xl p-8 flex flex-col justify-between overflow-hidden relative group">
+        <div className="col-span-2 md:col-span-4 lg:col-span-2 lg:row-span-2 bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 flex flex-col justify-between overflow-hidden relative group">
           <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none">
             <div className="w-96 h-96 border-[0.5px] border-slate-400 rounded-full flex items-center justify-center">
               <div className="w-64 h-64 border-[0.5px] border-slate-400 rounded-full flex items-center justify-center">
@@ -189,19 +189,19 @@ export default function App() {
             <span className="px-3 py-1 bg-amber-400/10 text-amber-400 text-[10px] font-bold tracking-widest rounded-full uppercase border border-amber-400/20">
               Lighting VI Pro
             </span>
-            <h1 className="text-4xl md:text-6xl font-bold mt-8 leading-[1.1] tracking-tight">
+            <h1 className="text-3xl md:text-6xl font-bold mt-6 md:mt-8 leading-[1.1] tracking-tight">
               点亮品牌的<br/>每一道光。
             </h1>
-            <p className="mt-6 text-slate-400 max-w-sm text-sm leading-relaxed">
+            <p className="mt-4 md:mt-6 text-slate-400 max-w-sm text-xs md:text-sm leading-relaxed">
               专为照明企业打造的 Pro 级 VI 视觉系统。更统一，更科技，更具吸引力。
             </p>
           </div>
 
-          <div className="flex items-end justify-between relative z-10 mt-12">
+          <div className="flex items-end justify-between relative z-10 mt-8 md:mt-12">
             <div className="flex -space-x-2">
-              <div className="w-10 h-10 bg-amber-400 border-2 border-slate-900 rounded-full shadow-lg"></div>
-              <div className="w-10 h-10 bg-slate-300 border-2 border-slate-900 rounded-full"></div>
-              <div className="w-10 h-10 bg-slate-700 border-2 border-slate-900 rounded-full"></div>
+              <div className="w-8 h-8 md:w-10 md:h-10 bg-amber-400 border-2 border-slate-900 rounded-full shadow-lg"></div>
+              <div className="w-8 h-8 md:w-10 md:h-10 bg-slate-300 border-2 border-slate-900 rounded-full"></div>
+              <div className="w-8 h-8 md:w-10 md:h-10 bg-slate-700 border-2 border-slate-900 rounded-full"></div>
             </div>
             
             <div className="flex space-x-2">
@@ -209,10 +209,10 @@ export default function App() {
                 <button 
                   onClick={handleSubmit}
                   disabled={submitting}
-                  className="px-6 py-3 bg-amber-400 text-slate-950 rounded-xl font-bold text-sm hover:scale-105 transition-all active:scale-95 shadow-[0_0_20px_rgba(251,191,36,0.3)] flex items-center"
+                  className="px-4 py-2 md:px-6 md:py-3 bg-amber-400 text-slate-950 rounded-xl font-bold text-[10px] md:text-sm hover:scale-105 transition-all active:scale-95 shadow-[0_0_20px_rgba(251,191,36,0.3)] flex items-center"
                 >
-                  {submitting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Download className="w-4 h-4 mr-2" />}
-                  生成清单 {totalSelected > 0 && `(${totalSelected})`}
+                  {submitting ? <Loader2 className="w-3 h-3 md:w-4 md:h-4 mr-2 animate-spin" /> : <Download className="w-3 h-3 md:w-4 md:h-4 mr-2" />}
+                  确认 {totalSelected > 0 && `(${totalSelected})`}
                 </button>
               )}
             </div>
@@ -227,11 +227,8 @@ export default function App() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: idx * 0.05 }}
-            className={`cursor-pointer bg-slate-900/50 border border-slate-800 rounded-3xl p-6 flex flex-col justify-between group hover:border-slate-700 transition-colors ${
-              idx === 0 ? 'md:col-span-2 lg:col-span-1' : 
-              idx === 1 ? 'md:col-span-2 lg:col-span-1' :
-              idx === 2 ? 'md:col-span-2 lg:col-span-2' :
-              'md:col-span-2 lg:col-span-1'
+            className={`cursor-pointer bg-slate-900/50 border border-slate-800 rounded-3xl p-4 md:p-6 flex flex-col justify-between group hover:border-slate-700 transition-colors ${
+              idx === 2 ? 'col-span-2' : 'col-span-1 md:col-span-2 lg:col-span-1'
             } ${expandedId === cat.id ? 'ring-2 ring-amber-400/50 bg-slate-900' : ''}`}
             onClick={() => setExpandedId(expandedId === cat.id ? null : cat.id)}
           >
