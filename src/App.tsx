@@ -105,7 +105,6 @@ const VI_DATA: VICategory[] = [
 
 export default function App() {
   const [selections, setSelections] = useState<Record<string, string[]>>({});
-  const [expandedId, setExpandedId] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [submittedFile, setSubmittedFile] = useState<string | null>(null);
 
@@ -150,173 +149,152 @@ export default function App() {
   const totalSelected = Object.values(selections).flat().length;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-amber-400 selection:text-slate-950 p-4 md:p-6 lg:p-8">
+    <div className="min-h-screen bg-[#f5f5f7] text-[#1d1d1f] font-sans selection:bg-blue-100">
       {/* Navigation */}
-      <nav className="flex justify-between items-center mb-12">
-        <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-amber-400 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(251,191,36,0.5)]">
-            <Zap className="h-5 w-5 text-slate-900 fill-current" />
-          </div>
-          <span className="text-xl font-bold tracking-tight uppercase">VI-PRO <span className="font-light opacity-50 text-slate-400 font-mono tracking-widest text-xs">SOLUTIONS</span></span>
-        </div>
-        
-        <div className="hidden md:flex space-x-8 text-[10px] uppercase tracking-[0.2em] font-bold text-slate-500">
-           {['Overview', 'Base VI', 'Space', 'Digital'].map(nav => (
-            <span key={nav} className="cursor-pointer hover:text-amber-400 transition-colors">
-              {nav}
-            </span>
-          ))}
-        </div>
-
-        <button className="px-4 py-2 bg-slate-900 border border-slate-800 rounded-lg text-[10px] font-bold hover:bg-slate-800 transition-colors uppercase tracking-widest text-slate-400">
-          DOCS
-        </button>
+      <nav className="fixed top-0 w-full h-12 bg-white/70 backdrop-blur-xl border-b border-gray-200/50 z-50 flex items-center justify-center space-x-8 px-4">
+        {['总览', '基础视觉', '产品', '导视', '数字'].map(nav => (
+          <span key={nav} className="text-[12px] font-normal cursor-pointer hover:text-[#0066cc] transition-colors tracking-tight">
+            {nav}
+          </span>
+        ))}
       </nav>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 md:grid-rows-6 lg:grid-rows-3 gap-3 md:gap-4 lg:min-h-[80vh]">
-        
-        {/* Main Bento Hero Card */}
-        <div className="col-span-2 md:col-span-4 lg:col-span-2 lg:row-span-2 bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-8 flex flex-col justify-between overflow-hidden relative group">
-          <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none">
-            <div className="w-96 h-96 border-[0.5px] border-slate-400 rounded-full flex items-center justify-center">
-              <div className="w-64 h-64 border-[0.5px] border-slate-400 rounded-full flex items-center justify-center">
-                <div className="w-32 h-32 border-[0.5px] border-slate-400 rounded-full"></div>
+      {/* Hero */}
+      <header className="pt-24 pb-20 md:pt-32 md:pb-24 px-6 bg-black text-white text-center">
+        <motion.h1 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-[32px] md:text-[56px] font-semibold tracking-tight leading-tight mb-4"
+        >
+          点亮品牌的每一道光。
+        </motion.h1>
+        <motion.h2 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="text-[17px] md:text-[24px] text-[#a1a1a6] font-normal mb-8 md:mb-10"
+        >
+          专为照明企业打造的 Pro 级 VI 视觉系统。
+        </motion.h2>
+        <motion.p 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="text-[15px] md:text-[21px] font-medium bg-gradient-to-r from-[#ffb443] via-[#ff4c4c] to-[#c040ff] bg-clip-text text-transparent inline-block"
+        >
+          更统一。更科技。更具吸引力。
+        </motion.p>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto py-12 md:py-20 px-4 md:px-6">
+        <h2 className="text-[28px] md:text-[40px] font-semibold text-center mb-10 md:mb-16 tracking-tight px-4">全场景品牌触点，一次掌控。</h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          {VI_DATA.map((cat, idx) => (
+            <motion.div
+              layout
+              key={cat.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.05 }}
+              className="bg-white rounded-[24px] p-6 md:p-10 shadow-[0_4px_24px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.08)] transition-all duration-500 md:hover:scale-[1.02] flex flex-col"
+            >
+              <div className="mb-6">
+                <div className="text-[40px]">{cat.icon}</div>
               </div>
-            </div>
-          </div>
-          
-          <div className="relative z-10">
-            <span className="px-3 py-1 bg-amber-400/10 text-amber-400 text-[10px] font-bold tracking-widest rounded-full uppercase border border-amber-400/20">
-              Lighting VI Pro
-            </span>
-            <h1 className="text-3xl md:text-6xl font-bold mt-6 md:mt-8 leading-[1.1] tracking-tight">
-              点亮品牌的<br/>每一道光。
-            </h1>
-            <p className="mt-4 md:mt-6 text-slate-400 max-w-sm text-xs md:text-sm leading-relaxed">
-              专为照明企业打造的 Pro 级 VI 视觉系统。更统一，更科技，更具吸引力。
-            </p>
-          </div>
 
-          <div className="flex items-end justify-between relative z-10 mt-8 md:mt-12">
-            <div className="flex -space-x-2">
-              <div className="w-8 h-8 md:w-10 md:h-10 bg-amber-400 border-2 border-slate-900 rounded-full shadow-lg"></div>
-              <div className="w-8 h-8 md:w-10 md:h-10 bg-slate-300 border-2 border-slate-900 rounded-full"></div>
-              <div className="w-8 h-8 md:w-10 md:h-10 bg-slate-700 border-2 border-slate-900 rounded-full"></div>
-            </div>
-            
-            <div className="flex space-x-2">
-              {totalSelected > 0 && (
-                <button 
-                  onClick={handleSubmit}
-                  disabled={submitting}
-                  className="px-4 py-2 md:px-6 md:py-3 bg-amber-400 text-slate-950 rounded-xl font-bold text-[10px] md:text-sm hover:scale-105 transition-all active:scale-95 shadow-[0_0_20px_rgba(251,191,36,0.3)] flex items-center"
-                >
-                  {submitting ? <Loader2 className="w-3 h-3 md:w-4 md:h-4 mr-2 animate-spin" /> : <Download className="w-3 h-3 md:w-4 md:h-4 mr-2" />}
-                  确认 {totalSelected > 0 && `(${totalSelected})`}
-                </button>
-              )}
-            </div>
-          </div>
+              <h3 className="text-[24px] font-semibold mb-3 tracking-tight">{cat.title}</h3>
+              <p className="text-[15px] text-[#86868b] leading-tight mb-8">{cat.desc}</p>
+
+              <ul className="space-y-0 divide-y divide-[#e5e5ea]">
+                {cat.items.map(item => (
+                  <li 
+                    key={item}
+                    onClick={() => toggleItem(cat.title, item)}
+                    className="group flex items-center justify-between py-4 cursor-pointer"
+                  >
+                    <div className="flex items-center">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#0066cc] mr-3" />
+                      <span className="text-[15px] font-normal text-[#1d1d1f] tracking-tight">{item}</span>
+                    </div>
+                    
+                    {/* Apple Style Checkbox at the end */}
+                    <div className={`w-6 h-6 rounded-[6px] border-2 flex items-center justify-center transition-all ${
+                      selections[cat.title]?.includes(item) 
+                        ? 'bg-[#0066cc] border-[#0066cc]' 
+                        : 'border-[#d2d2d7] group-hover:border-[#86868b]'
+                    }`}>
+                      {selections[cat.title]?.includes(item) && (
+                        <Check className="w-4 h-4 text-white stroke-[3]" />
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          ))}
         </div>
+      </main>
 
-        {/* Categories Bento Grid */}
-        {VI_DATA.map((cat, idx) => (
-          <motion.div
-            layout
-            key={cat.id}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: idx * 0.05 }}
-            className={`cursor-pointer bg-slate-900/50 border border-slate-800 rounded-3xl p-4 md:p-6 flex flex-col justify-between group hover:border-slate-700 transition-colors ${
-              idx === 2 ? 'col-span-2' : 'col-span-1 md:col-span-2 lg:col-span-1'
-            } ${expandedId === cat.id ? 'ring-2 ring-amber-400/50 bg-slate-900' : ''}`}
-            onClick={() => setExpandedId(expandedId === cat.id ? null : cat.id)}
-          >
-            <div>
-              <div className="flex justify-between items-start mb-4">
-                <div className="p-3 bg-slate-800 rounded-xl group-hover:bg-slate-700 transition-colors">
-                  {cat.icon}
-                </div>
-                {expandedId === cat.id ? <Check className="w-4 h-4 text-amber-400" /> : <ChevronDown className="w-4 h-4 text-slate-600 group-hover:text-slate-400" />}
-              </div>
-              <h3 className="font-bold text-lg mb-1">{cat.title}</h3>
-              <p className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">{cat.desc}</p>
-            </div>
-
-            <AnimatePresence>
-              {expandedId === cat.id ? (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="mt-6 overflow-hidden"
-                >
-                  <ul className="space-y-2">
-                    {cat.items.map(item => (
-                      <li 
-                        key={item}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleItem(cat.title, item);
-                        }}
-                        className={`flex items-center justify-between p-2 rounded-lg text-[11px] transition-colors ${
-                          selections[cat.title]?.includes(item) ? 'bg-amber-400/10 text-amber-400' : 'hover:bg-slate-800 text-slate-400'
-                        }`}
-                      >
-                        <span className="flex-1">{item}</span>
-                        {selections[cat.title]?.includes(item) && <Check className="w-3 h-3 ml-2" />}
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-              ) : (
-                <div className="mt-8 flex justify-between items-center text-[9px] font-bold text-slate-600 uppercase tracking-widest">
-                  <span>{cat.items.length} 条规范</span>
-                  <span className="group-hover:text-amber-400 transition-colors">详情 +</span>
-                </div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Footer */}
-      <footer className="mt-12 py-8 flex flex-col md:flex-row justify-between items-center text-[10px] text-slate-600 border-t border-slate-900 space-y-4 md:space-y-0">
-        <p>© 2026 LUX-VI LIGHTING DESIGN SOLUTIONS. ALL ASSETS COMPLIANT WITH GB/T STANDARDS.</p>
-        <div className="flex space-x-6">
-          <span className="flex items-center">
-            <span className="w-1.5 h-1.5 bg-green-500 rounded-full mr-2 animate-pulse"></span>
-            SERVER SYNC ACTIVE
-          </span>
-          <span className="font-mono opacity-50 tracking-widest">BUILD 5.1.0-STABLE</span>
-        </div>
-      </footer>
-
-      {/* Global Success Notification */}
+      {/* Floating Action Button */}
       <AnimatePresence>
-        {submittedFile && (
+        {totalSelected > 0 && !submittedFile && (
           <motion.div 
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-6"
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50"
           >
-            <div className="bg-slate-900 border border-slate-800 p-8 rounded-[2.5rem] max-w-sm w-full text-center shadow-2xl">
-              <div className="w-16 h-16 bg-amber-400 rounded-full flex items-center justify-center text-slate-900 mx-auto mb-6 shadow-[0_0_30px_rgba(251,191,36,0.3)]">
-                <Check className="w-8 h-8" strokeWidth={3} />
-              </div>
-              <h4 className="text-xl font-bold mb-2">生成成功</h4>
-              <p className="text-sm text-slate-400 mb-8 font-mono">{submittedFile}</p>
-              <button 
-                onClick={() => setSubmittedFile(null)}
-                className="w-full py-4 bg-amber-400 text-slate-950 rounded-2xl font-bold text-sm tracking-widest uppercase hover:scale-[1.02] transition-transform active:scale-95"
-              >
-                回到系统
-              </button>
-            </div>
+            <button 
+              onClick={handleSubmit}
+              disabled={submitting}
+              className="bg-[#000000] text-white px-8 py-4 rounded-full font-semibold shadow-2xl flex items-center space-x-3 hover:scale-105 active:scale-95 transition-all text-sm tracking-tight"
+            >
+              {submitting ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Download className="w-4 h-4" />
+              )}
+              <span>立即提交所选项目 ({totalSelected})</span>
+            </button>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Success Modal */}
+      <AnimatePresence>
+        {submittedFile && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-white/80 backdrop-blur-md px-6"
+          >
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="bg-white border border-[#d2d2d7] p-10 rounded-[32px] max-w-sm w-full text-center shadow-2xl"
+            >
+              <div className="w-16 h-16 bg-[#32d74b] rounded-full flex items-center justify-center text-white mx-auto mb-6 shadow-lg">
+                <Check className="w-8 h-8" strokeWidth={3} />
+              </div>
+              <h4 className="text-[24px] font-semibold mb-2">需求清单已生成</h4>
+              <p className="text-[14px] text-[#86868b] mb-8 font-mono">{submittedFile}</p>
+              <button 
+                onClick={() => setSubmittedFile(null)}
+                className="w-full py-4 bg-[#1d1d1f] text-white rounded-2xl font-bold text-sm tracking-tight hover:bg-black transition-colors"
+              >
+                好的
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <footer className="py-12 px-6 text-center border-t border-[#d2d2d7] bg-white">
+        <p className="text-[12px] text-[#86868b]">此设计清单专为照明灯具行业优化。Copyright © 2026. All rights reserved.</p>
+      </footer>
     </div>
   );
 }
